@@ -1,0 +1,33 @@
+<h1>Hola desde la vista de administrador</h1>
+
+
+<div class="container">
+  <div class="row">
+    {{#each rooms}}
+      {{> chat id=this}}
+    {{/each}}
+  </div>
+
+</div>
+<script>
+  let socket = io();
+  socket.emit("conectado","admin")
+    let form = document.getElementById('form');
+    let input = document.getElementById('input');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        let id = document.getElementById("modal-title").innerHTML
+        if (input.value) {
+            socket.emit('chat message', {msg:input.value,id});
+            input.value = '';
+        }
+    });
+
+    socket.on('chat message', function (msg) {
+        let modalBody = document.getElementById(`message-${msg.id}`)
+        let item = document.createElement('li')
+        item.textContent = msg.msg
+        modalBody.appendChild(item);
+    });
+</script>

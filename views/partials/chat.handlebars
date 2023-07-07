@@ -1,0 +1,29 @@
+<!-- Button trigger modal -->
+{{>modal}}
+
+<div class="col-md-3">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{id}}</h5>
+            <a onclick="getData('{{id}}')" class="btn btn-success" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">Leer conversación</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const getData = async (id) => {
+        let response = await fetch(`/info_chat/${id}`)
+        let { message } = await response.json()
+        const modalTitle = document.getElementById("modal-title")
+        const modalBody = document.getElementById("modal-body")
+        modalTitle.innerHTML = id
+        let html = ''
+        html = `<ul id='message-${id}'>`
+        message.forEach(item => {
+            html += `<li>${item}</li>`
+        })
+        html += '</ul>'
+        modalBody.innerHTML = html
+    }
+</script>
